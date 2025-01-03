@@ -4,8 +4,11 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
+  useLoaderData
 } from "@remix-run/react";
+import { json } from "@remix-run/node";
 import type { LinksFunction } from "@remix-run/node";
+import { fetchFromApi } from "./utils/api";
 
 import "./tailwind.css";
 
@@ -23,6 +26,7 @@ export const links: LinksFunction = () => [
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
+
   return (
     <html lang="en">
       <head>

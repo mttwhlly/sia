@@ -21,4 +21,12 @@ export default defineConfig({
     }),
     tsconfigPaths(),
   ],
+  server: {
+    proxy: {
+      '/api': {
+        target: 'https://localhost:5204',
+        secure: false
+      }
+    }
+  }
 });
