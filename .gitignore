@@ -1,0 +1,16 @@
+bin/
+obj/
+/packages/
+
+# IDE-specific
+.vscode/
+.idea/
+.vs/
+
+# Build files
+node_modules/
+**/.cache/
+**/build/
+
+# Secrets
+.env
