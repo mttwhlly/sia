@@ -7,7 +7,6 @@ export async function fetchFromApi(endpoint: string, options: RequestInit = {}) 
       "Content-Type": "application/json",
       ...options.headers,
     },
-    credentials: "include", // For handling cookies if needed
   });
 
   if (!response.ok) {

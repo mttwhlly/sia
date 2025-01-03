@@ -4,15 +4,12 @@ import {
   Outlet,
   Scripts,
   ScrollRestoration,
-  useLoaderData
 } from "@remix-run/react";
-import { json } from "@remix-run/node";
 import type { LinksFunction } from "@remix-run/node";
-import { fetchFromApi } from "./utils/api";
-
 import "./tailwind.css";
 
 export const links: LinksFunction = () => [
+  { rel: "preconnect", href: "https://fonts.googleapis.com" },
   { rel: "preconnect", href: "https://fonts.googleapis.com" },
   {
     rel: "preconnect",
