@@ -3,7 +3,8 @@ import { useLoaderData } from '@remix-run/react'
 import { json } from '@remix-run/node'
 import { useState } from 'react'
 import { Provider } from '~/types/providers'
-import ProvidersSearchForm from '~/components/providersSearchForm'
+import ProviderSearch from '~/components/providerSearch'
+import {ProviderTable} from '~/components/providerTable'
 
 export const meta: MetaFunction = () => {
   return [
@@ -29,9 +30,35 @@ export default function Index() {
   const { providers } = useLoaderData<{ providers: Provider[] }>()
   const [isSubmitting, setIsSubmitting] = useState(false)
 
+  const data = [
+    {
+      id: '1',
+      name: 'Dr. John Doe',
+      npiNumber: '1234567890',
+      address: '123 Main St, Anytown, USA 12345',
+    },
+    {
+      id: '2',
+      name: 'Dr. Jane Smith',
+      npiNumber: '0987654321',
+      address: '456 Oak Ave, Somewhere, USA 67890',
+    },
+    {
+      id: '3',
+      name: 'Dr. Alice Johnson',
+      npiNumber: '1122334455',
+      address: '789 Pine Rd, Elsewhere, USA 13579',
+    },
+  ]
+
   return (
-    <div className="p-6 max-w-2xl mx-auto">
-      <ProvidersSearchForm />
+    <>        <header className="p-6 mx-auto border-b"><h1 className="text-xl font-bold">Simple Integration Application</h1></header>
+    <main className="p-6 max-w-2xl mx-auto">
+      <p className='pb-8 text-sm'>Search the NPPES directory for a healthcare provider using name or location details.</p>
+      <ProviderSearch />
+      {providers.length > 0 && (
+      <ProviderTable providers={data} />
+      )}
 
       {providers.length > 0 && (
         <div className="overflow-x-auto">
@@ -67,6 +94,7 @@ export default function Index() {
           </table>
         </div>
       )}
-    </div>
+    </main>
+    </>
   )
 }
