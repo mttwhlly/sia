@@ -13,8 +13,36 @@ public class ProvidersController : ControllerBase
 
     public class NppesResponse
     {
-        public JsonDocument Data { get; set; }
+        public List<NPPESResult> results { get; set; }
+        public int result_count { get; set; }
     }
+
+    public class NPPESResult
+    {
+        public string number { get; set; }
+        public Basic basic { get; set; }
+        public List<Address> addresses { get; set; }
+    }
+
+    public class Basic
+    {
+        public string first_name { get; set; }
+        public string last_name { get; set; }
+    }
+
+    public class Address
+    {
+        public string address_1 { get; set; }
+        public string city { get; set; }
+        public string state { get; set; }
+        public string postal_code { get; set; }
+    }
+    public class ProviderResponse
+{
+    public string npi { get; set; }
+    public string name { get; set; }
+    public string address { get; set; }
+}
 
     public ProvidersController(IHttpClientFactory httpClientFactory, ILogger<ProvidersController> logger)
     {
@@ -59,9 +87,32 @@ public class ProvidersController : ControllerBase
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            var jsonDoc = JsonDocument.Parse(content);
+            _logger.LogInformation("API Response: {Content}", content);
             
-            return Ok(jsonDoc.RootElement);
+            var options = new JsonSerializerOptions
+            {
+                PropertyNameCaseInsensitive = true
+            };
+            
+            var nppesResponse = JsonSerializer.Deserialize<NppesResponse>(content, options);
+
+            if (nppesResponse?.results == null)
+            {
+                _logger.LogWarning("Deserialized response or results is null");
+                return Ok(new List<object>());
+            }
+            _logger.LogInformation("Found {Count} results", nppesResponse.results.Count);
+
+            var providers = nppesResponse.results.Select(x => new ProviderResponse
+            {
+                npi = x.number,
+                name = $"{x.basic.first_name} {x.basic.last_name}",
+                address = $"{x.addresses[0].address_1}, {x.addresses[0].city}, {x.addresses[0].state} {x.addresses[0].postal_code}",
+            }).ToList();
+
+            _logger.LogInformation("Providers: {Providers}", providers);
+            
+            return Ok(providers);
         }
         catch (Exception ex)
         {
