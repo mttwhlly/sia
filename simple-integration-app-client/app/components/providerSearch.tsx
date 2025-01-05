@@ -2,6 +2,12 @@ import { useState } from 'react'
 import { Form, useSubmit } from '@remix-run/react'
 import { usStates } from '~/utils/us-states'
 import { Button } from '~/components/ui/button'
+import { Card,
+  CardContent,
+  CardDescription,
+  CardFooter,
+  CardHeader,
+  CardTitle, } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Select,
@@ -17,9 +23,14 @@ export default function ProviderSearch() {
       const [isSubmitting, setIsSubmitting] = useState(false)
       
     return (
+      <Card>
+        <CardHeader>
+          <CardDescription>Search for a US healthcare provider on the <a href="https://npiregistry.cms.hhs.gov/" >NPPES NPI Registry</a></CardDescription>
+          </CardHeader>
+          <CardContent>
         <Form
         method="get"
-        className="grid gap-4 mb-8"
+        className="grid gap-4"
         aria-labelledby="form-title"
       >
         <h2 id="form-title" className="sr-only">
@@ -40,7 +51,7 @@ export default function ProviderSearch() {
               aria-describedby="firstName-help"
             />
             <p id="firstName-help" className="text-xs text-gray-500">
-              Enter your first name.
+              Enter your first name
             </p>
           </div>
 
@@ -60,7 +71,7 @@ export default function ProviderSearch() {
               aria-describedby="lastName-help"
             />
             <p id="lastName-help" className="text-xs text-gray-500">
-              Enter your last name (this field is required).
+              Enter your last name (this field is required)
             </p>
           </div>
 
@@ -76,7 +87,7 @@ export default function ProviderSearch() {
               aria-describedby="city-help"
             />
             <p id="city-help" className="text-xs text-gray-500">
-              Enter your city.
+              Enter your city
             </p>
           </div>
 
@@ -104,14 +115,14 @@ export default function ProviderSearch() {
                 </SelectContent>
             </Select>
             <p id="state-help" className="text-xs text-gray-500">
-              Select your state from the dropdown.
+              Select your state from the dropdown
             </p>
           </div>
         </div>
 
         <Button
           type="submit"
-          className="bg-blue-500 text-white py-2 px-4 rounded"
+          className="bg-blue-900 text-white py-2 px-4 rounded"
           disabled={isSubmitting}
           aria-live="assertive"
           aria-describedby="submit-help"
@@ -124,5 +135,8 @@ export default function ProviderSearch() {
           criteria.
         </p>
       </Form>
+      </CardContent>
+      </Card>
+  
     );
 }

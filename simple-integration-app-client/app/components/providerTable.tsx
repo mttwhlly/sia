@@ -50,7 +50,7 @@ export const columns: ColumnDef<Provider>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue('name')}</div>,
+    cell: ({ row }) => <div className="text-xs">{row.getValue('name')}</div>,
   },
   {
     accessorKey: 'npi',
@@ -65,7 +65,7 @@ export const columns: ColumnDef<Provider>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div>{row.getValue('npi')}</div>,
+    cell: ({ row }) => <div className="text-xs">{row.getValue('npi')}</div>,
   },
   {
     accessorKey: 'address',
@@ -80,7 +80,7 @@ export const columns: ColumnDef<Provider>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div>{row.getValue('address')}</div>,
+    cell: ({ row }) => <div className="text-xs">{row.getValue('address')}</div>,
   },
 ]
 
@@ -113,7 +113,8 @@ export function ProviderTable({ providers }: ProviderTableProps) {
   })
 
   return (
-    <div className="w-full">
+    <div className="w-full mt-6">
+    <h2 className='py-2 font-bold text-blue-900'>Results</h2>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -121,7 +122,7 @@ export function ProviderTable({ providers }: ProviderTableProps) {
               <TableRow key={headerGroup.id}>
                 {headerGroup.headers.map((header) => {
                   return (
-                    <TableHead key={header.id}>
+                    <TableHead key={header.id} className='px-0'>
                       {header.isPlaceholder
                         ? null
                         : flexRender(
@@ -139,10 +140,10 @@ export function ProviderTable({ providers }: ProviderTableProps) {
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  data-state={row.getIsSelected() && 'selected'}
+                  className='hover:bg-neutral-100'
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className='px-4'>
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
@@ -165,10 +166,6 @@ export function ProviderTable({ providers }: ProviderTableProps) {
         </Table>
       </div>
       <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{' '}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
         <div className="space-x-2">
           <Button
             variant="outline"
