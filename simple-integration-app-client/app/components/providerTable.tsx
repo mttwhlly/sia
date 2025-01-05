@@ -13,17 +13,9 @@ import {
   getSortedRowModel,
   useReactTable,
 } from '@tanstack/react-table'
-import { ArrowUpDown, ChevronDown, MoreHorizontal } from 'lucide-react'
+import { ArrowUpDown } from 'lucide-react'
 
 import { Button } from '~/components/ui/button'
-import { Checkbox } from '~/components/ui/checkbox'
-import {
-  DropdownMenu,
-  DropdownMenuCheckboxItem,
-  DropdownMenuContent,
-  DropdownMenuTrigger,
-} from '~/components/ui/dropdown-menu'
-import { Input } from '~/components/ui/input'
 import {
   Table,
   TableBody,
@@ -36,7 +28,7 @@ import {
 interface Provider {
   id: string
   name: string
-  npiNumber: string
+  npi: string
   address: string
 }
 
@@ -61,7 +53,7 @@ export const columns: ColumnDef<Provider>[] = [
     cell: ({ row }) => <div className="lowercase">{row.getValue('name')}</div>,
   },
   {
-    accessorKey: 'npiNumber',
+    accessorKey: 'npi',
     header: ({ column }) => {
       return (
         <Button
@@ -73,7 +65,7 @@ export const columns: ColumnDef<Provider>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div>{row.getValue('npiNumber')}</div>,
+    cell: ({ row }) => <div>{row.getValue('npi')}</div>,
   },
   {
     accessorKey: 'address',

@@ -1,4 +1,4 @@
-const API_BASE = "http://localhost:5204/providers";
+const API_BASE = `${process.env.BACKEND_URL}/providers`;
 
 export async function fetchFromApi(endpoint: string, options: RequestInit = {}) {
   const response = await fetch(`${API_BASE}${endpoint}`, {

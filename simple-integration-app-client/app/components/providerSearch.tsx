@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Form } from '@remix-run/react'
+import { Form, useSubmit } from '@remix-run/react'
 import { usStates } from '~/utils/us-states'
 import { Button } from '~/components/ui/button'
 import { Input } from '~/components/ui/input'
@@ -15,7 +15,7 @@ import { Select,
 
 export default function ProviderSearch() {
       const [isSubmitting, setIsSubmitting] = useState(false)
-    
+      
     return (
         <Form
         method="get"
@@ -37,7 +37,6 @@ export default function ProviderSearch() {
               id="firstName"
               name="firstName"
               type="text"
-              
               aria-describedby="firstName-help"
             />
             <p id="firstName-help" className="text-xs text-gray-500">
