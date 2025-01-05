@@ -1,13 +1,11 @@
 import { useState } from 'react'
-import { Form, useSubmit } from '@remix-run/react'
+import { Form, useSearchParams } from '@remix-run/react'
 import { usStates } from '~/utils/us-states'
 import { Button } from '~/components/ui/button'
 import { Card,
   CardContent,
   CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle, } from '~/components/ui/card'
+  CardHeader } from '~/components/ui/card'
 import { Input } from '~/components/ui/input'
 import { Label } from '~/components/ui/label'
 import { Select,
@@ -21,6 +19,12 @@ import { Select,
 
 export default function ProviderSearch() {
       const [isSubmitting, setIsSubmitting] = useState(false)
+      const [searchParams] = useSearchParams()
+
+      const defaultFirstName = searchParams.get('firstName') || ''
+      const defaultLastName = searchParams.get('lastName') || ''
+      const defaultCity = searchParams.get('city') || ''
+      const defaultState = searchParams.get('state') || ''
       
     return (
       <Card>
@@ -49,6 +53,8 @@ export default function ProviderSearch() {
               name="firstName"
               type="text"
               aria-describedby="firstName-help"
+              defaultValue={defaultFirstName}
+              className='capitalize'
             />
             <p id="firstName-help" className="text-xs text-gray-500">
               Enter your first name
@@ -69,6 +75,8 @@ export default function ProviderSearch() {
               type="text"
               aria-required="true"
               aria-describedby="lastName-help"
+              defaultValue={defaultLastName}
+              className='capitalize'
             />
             <p id="lastName-help" className="text-xs text-gray-500">
               Enter your last name (this field is required)
@@ -83,8 +91,9 @@ export default function ProviderSearch() {
               id="city"
               name="city"
               type="text"
-              className="w-full p-2 border rounded"
+              className="w-full p-2 border rounded capitalize"
               aria-describedby="city-help"
+              defaultValue={defaultCity}
             />
             <p id="city-help" className="text-xs text-gray-500">
               Enter your city
@@ -99,9 +108,10 @@ export default function ProviderSearch() {
               name="state"
               aria-describedby="state-help"
               aria-label="State"
+              defaultValue={defaultState}
             >
                 <SelectTrigger>
-                    <SelectValue>Select State</SelectValue>
+                    <SelectValue>{defaultState ? usStates.find(state => state.value === defaultState)?.label : 'Select State'}</SelectValue>
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
