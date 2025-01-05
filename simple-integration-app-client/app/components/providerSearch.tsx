@@ -111,7 +111,7 @@ export default function ProviderSearch() {
               defaultValue={defaultState}
             >
                 <SelectTrigger>
-                    <SelectValue>{defaultState ? usStates.find(state => state.value === defaultState)?.label : 'Select State'}</SelectValue>
+                    <SelectValue placeholder="Select a state" />
                 </SelectTrigger>
                 <SelectContent>
                     <SelectGroup>
