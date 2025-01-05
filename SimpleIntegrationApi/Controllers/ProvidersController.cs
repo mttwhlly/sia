@@ -5,50 +5,17 @@ namespace SimpleIntegrationApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+
 public class ProvidersController : ControllerBase
 {
     private readonly IHttpClientFactory _httpClientFactory;
-    private const string NPPES_API_URL = "https://npiregistry.cms.hhs.gov/api/";
     private readonly ILogger<ProvidersController> _logger;
-
-    public class NppesResponse
-    {
-        public List<NPPESResult> results { get; set; }
-        public int result_count { get; set; }
-    }
-
-    public class NPPESResult
-    {
-        public string number { get; set; }
-        public Basic basic { get; set; }
-        public List<Address> addresses { get; set; }
-    }
-
-    public class Basic
-    {
-        public string first_name { get; set; }
-        public string last_name { get; set; }
-    }
-
-    public class Address
-    {
-        public string address_1 { get; set; }
-        public string city { get; set; }
-        public string state { get; set; }
-        public string postal_code { get; set; }
-    }
-    public class ProviderResponse
-{
-    public string npi { get; set; }
-    public string name { get; set; }
-    public string address { get; set; }
-}
-
     public ProvidersController(IHttpClientFactory httpClientFactory, ILogger<ProvidersController> logger)
     {
         _httpClientFactory = httpClientFactory;
         _logger = logger;
     }
+    
 
     [HttpGet]
     public async Task<IActionResult> Get(
@@ -62,9 +29,9 @@ public class ProvidersController : ControllerBase
             var queryParams = new Dictionary<string, string>
             {
                 { "version", "2.1" },
-                { "limit", "10" }
+                { "limit", "200" },
             };
-
+            
             if (!string.IsNullOrEmpty(firstName))
                 queryParams.Add("first_name", firstName);
             if (!string.IsNullOrEmpty(lastName))
@@ -73,9 +40,15 @@ public class ProvidersController : ControllerBase
                 queryParams.Add("city", city);
             if (!string.IsNullOrEmpty(state))
                 queryParams.Add("state", state);
+            
+            // return if only version and limit parrams present
+            if (queryParams.Count == 2)
+                return Ok(new List<object>());
 
             var queryString = string.Join("&", queryParams.Select(x => $"{x.Key}={Uri.EscapeDataString(x.Value)}"));
-            var requestUrl = $"{NPPES_API_URL}?{queryString}";
+            var requestUrl = $"https://npiregistry.cms.hhs.gov/api/?{queryString}";
+            
+            _logger.LogInformation("Fetching from NPPES API: {Url}", requestUrl);
 
             var httpClient = _httpClientFactory.CreateClient();
             var response = await httpClient.GetAsync(requestUrl);
@@ -87,7 +60,6 @@ public class ProvidersController : ControllerBase
             }
 
             var content = await response.Content.ReadAsStringAsync();
-            _logger.LogInformation("API Response: {Content}", content);
             
             var options = new JsonSerializerOptions
             {
@@ -106,11 +78,12 @@ public class ProvidersController : ControllerBase
             var providers = nppesResponse.results.Select(x => new ProviderResponse
             {
                 npi = x.number,
-                name = $"{x.basic.first_name} {x.basic.last_name}",
-                address = $"{x.addresses[0].address_1}, {x.addresses[0].city}, {x.addresses[0].state} {x.addresses[0].postal_code}",
+                name = $"{x.basic.last_name}, {x.basic.first_name}",
+                address = x.addresses.FirstOrDefault()?.address_1 ?? "",
+                city = x.addresses.FirstOrDefault()?.city ?? "", 
+                state = x.addresses.FirstOrDefault()?.state ?? "", 
+                zip = x.addresses.FirstOrDefault()?.postal_code ?? ""
             }).ToList();
-
-            _logger.LogInformation("Providers: {Providers}", providers);
             
             return Ok(providers);
         }

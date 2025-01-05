@@ -7,9 +7,12 @@ import ProviderSearch from '~/components/providerSearch'
 import {ProviderTable} from '~/components/providerTable'
 
 interface Provider {
+  name: string,
   npi: string,
   address: string,
-  name: string,
+  city: string,
+  state: string,
+  zip: string,
 }
 
 export const meta: MetaFunction = () => {
