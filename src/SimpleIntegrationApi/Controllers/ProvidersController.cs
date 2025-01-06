@@ -47,23 +47,29 @@ public class ProvidersController : ControllerBase
             if (queryParams.Count == 2)
                 return Ok(new List<object>());
 
-            var nppesResponse = await _nppesApiClient.GetProvidersAsync(queryParams);
-
-            if (nppesResponse?.results == null || !nppesResponse.results.Any())
-                return Ok(new List<ProviderResponse>());
-            if (nppesResponse == null)
+            try
             {
-                return StatusCode(StatusCodes.Status500InternalServerError);
+
+                var nppesResponse = await _nppesApiClient.GetProvidersAsync(queryParams);
+
+                if (nppesResponse?.results == null || !nppesResponse.results.Any())
+                    return Ok(new List<ProviderResponse>());
+
+                var providers = ProviderMapper.MapToProviderResponses(nppesResponse);
+
+                return Ok(providers);
             }
-            
-            var providers = ProviderMapper.MapToProviderResponses(nppesResponse);
-            
-            return Ok(providers);
+            catch (HttpRequestException ex) // Handle network errors (e.g., server being unreachable)
+            {
+                _logger.LogError(ex, "Error occurred while fetching providers from the API.");
+                return StatusCode(StatusCodes.Status500InternalServerError,
+                    "An error occurred while fetching providers.");
+            }
         }
-        catch (HttpRequestException ex)
+        catch (Exception ex) // Catch other unforeseen exceptions
         {
-            _logger.LogError(ex, $"An error occurred while fetching providers: {ex.Message}");
-            return StatusCode(StatusCodes.Status500InternalServerError);
+            _logger.LogError(ex, "An unexpected error occurred in the Get method.");
+            return StatusCode(StatusCodes.Status500InternalServerError, "An unexpected error occurred.");
         }
     }
 }

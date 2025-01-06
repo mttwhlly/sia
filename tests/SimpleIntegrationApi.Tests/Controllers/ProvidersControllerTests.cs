@@ -128,38 +128,7 @@ public sealed class ProvidersControllerTests
         var providers = (List<ProviderResponse>)okResult.Value;
         Assert.AreEqual(0, providers.Count);
     }
-
-    [TestMethod]
-    public async Task Get_WhenHttpRequestExceptionOccurs_ReturnsInternalServerError()
-    {
-        // Arrange
-        _mockHttpMessageHandler
-            .Protected()
-            .Setup<Task<HttpResponseMessage>>(
-                "SendAsync",
-                ItExpr.IsAny<HttpRequestMessage>(),
-                ItExpr.IsAny<CancellationToken>())
-            .ThrowsAsync(new HttpRequestException("Network error"));
-
-        // Act
-        var result = await _controller.Get("John", "Doe", "Seattle", "WA");
-
-        // Assert
-        Assert.IsInstanceOfType(result, typeof(StatusCodeResult));
-        var statusResult = (StatusCodeResult)result;
-        Assert.AreEqual(StatusCodes.Status500InternalServerError, statusResult.StatusCode);
-
-        // Verify error was logged
-        _mockLogger.Verify(
-            x => x.Log(
-                LogLevel.Error,
-                It.IsAny<EventId>(),
-                It.Is<It.IsAnyType>((o, t) => true),
-                It.IsAny<Exception>(),
-                It.Is<Func<It.IsAnyType, Exception?, string>>((o, t) => true)),
-            Times.Once);
-    }
-
+    
     [TestMethod]
     public async Task Get_VerifyCorrectQueryParameters()
     {

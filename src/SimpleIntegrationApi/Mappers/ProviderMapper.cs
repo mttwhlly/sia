@@ -5,6 +5,11 @@ public static class ProviderMapper
 {
     public static List<ProviderResponse> MapToProviderResponses(NppesResponse response)
     {
+        if (response == null || response.results == null)
+        {
+            // If the response or results are null, return an empty list
+            return new List<ProviderResponse>();
+        }
         return response.results.Select(result => new ProviderResponse
         {
             npi = result.number,
