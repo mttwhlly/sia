@@ -1,6 +1,0 @@
-@SimpleIntegrationApi_HostAddress = http://localhost:5204
-
-GET {{SimpleIntegrationApi_HostAddress}}/providers/
-Accept: application/json
-
-###
