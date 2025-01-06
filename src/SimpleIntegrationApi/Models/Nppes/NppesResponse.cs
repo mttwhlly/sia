@@ -1,3 +1,4 @@
+namespace SimpleIntegrationApi.Models.Nppes;
 public class NppesResponse
 {
     public required List<NPPESResult> results { get; set; }
