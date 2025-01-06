@@ -142,7 +142,7 @@ export function ProviderTable({ providers }: ProviderTableProps) {
   return (
     <div className="w-full mt-6">
     <h2 className='py-2 font-bold text-blue-900'>Results</h2>
-      <div className="rounded-md border">
+      <div className="rounded-xl border">
         <Table>
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (

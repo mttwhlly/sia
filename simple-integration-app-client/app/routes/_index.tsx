@@ -37,6 +37,8 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 export default function Index() {
   const { providers } = useLoaderData<typeof loader>()
 
+  console.log(providers)
+
   return (
     <>
     <header className="border-b">
