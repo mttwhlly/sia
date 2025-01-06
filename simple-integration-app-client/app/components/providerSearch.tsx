@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { Form, useSearchParams } from '@remix-run/react'
-import { usStates } from '~/utils/us-states'
+import { usStates } from '~/lib/constants'
 import { Button } from '~/components/ui/button'
 import { Card,
   CardContent,

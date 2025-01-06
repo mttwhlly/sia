@@ -2,7 +2,6 @@ import type { MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { LoaderFunctionArgs, json } from '@remix-run/node'
 import { Hospital } from 'lucide-react'
-// import { Provider } from '~/types/providers'
 import ProviderSearch from '~/components/providerSearch'
 import {ProviderTable} from '~/components/providerTable'
 
