@@ -42,10 +42,6 @@ public sealed class ProvidersControllerTests
         // Explicitly clean up mocks and reset states for isolation
         _mockLogger.Reset();
         _mockHttpMessageHandler.Reset();
-        _controller = null!;
-        
-        // Nullify the controller instance (optional, ensures no dependency leakage)
-        _controller = null!;
     }
 
     [TestMethod]
@@ -97,21 +93,6 @@ public sealed class ProvidersControllerTests
         var providers = (List<object>)okResult.Value;
         Assert.AreEqual(0, providers.Count);
     }
-
-    // [TestMethod]
-    // public async Task Get_WhenApiReturnsError_ReturnsInternalServerError()
-    // {
-    //     // Arrange
-    //     SetupMockHttpResponse(HttpStatusCode.InternalServerError, null);
-    //
-    //     // Act
-    //     var result = await _controller.Get("John", "Doe", "Seattle", "WA");
-    //
-    //     // Assert
-    //     Assert.IsInstanceOfType(result, typeof(StatusCodeResult));
-    //     var statusResult = (StatusCodeResult)result;
-    //     Assert.AreEqual(StatusCodes.Status500InternalServerError, statusResult.StatusCode);
-    // }
 
     [TestMethod]
     public async Task Get_WhenDeserializedResponseIsNull_ReturnsEmptyList()

@@ -3,6 +3,10 @@ using SimpleIntegrationApi.Models.Nppes;
 
 namespace SimpleIntegrationApi.Services;
 
+public interface INppesApiClient
+{
+    Task<NppesResponse> FetchProviders(string firstName, string lastName, string city, string state);
+}
 public class NppesApiClient
 {
     private readonly HttpClient _httpClient;
