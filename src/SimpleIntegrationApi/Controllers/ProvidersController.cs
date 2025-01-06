@@ -51,6 +51,10 @@ public class ProvidersController : ControllerBase
 
             if (nppesResponse?.results == null || !nppesResponse.results.Any())
                 return Ok(new List<ProviderResponse>());
+            if (nppesResponse == null)
+            {
+                return StatusCode(StatusCodes.Status500InternalServerError);
+            }
             
             var providers = ProviderMapper.MapToProviderResponses(nppesResponse);
             
