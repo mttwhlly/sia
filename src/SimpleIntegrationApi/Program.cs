@@ -1,3 +1,5 @@
+using SimpleIntegrationApi.Services;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.   
@@ -14,6 +16,10 @@ builder.Services.AddCors(options =>
               .AllowAnyHeader()
               .AllowAnyMethod();
     });
+});
+builder.Services.AddHttpClient<NppesApiClient>(client =>
+{
+    client.BaseAddress = new Uri("https://npiregistry.cms.hhs.gov");
 });
 
 var app = builder.Build();

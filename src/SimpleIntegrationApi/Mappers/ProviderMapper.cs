@@ -1,14 +1,10 @@
-namespace SimpleIntegrationApi.Helpers;
-
 using SimpleIntegrationApi.Models.Nppes;
 
+namespace SimpleIntegrationApi.Mappers;
 public static class ProviderMapper
 {
     public static List<ProviderResponse> MapToProviderResponses(NppesResponse response)
     {
-        if (response == null || response.results == null)
-            return new List<ProviderResponse>();
-
         return response.results.Select(result => new ProviderResponse
         {
             npi = result.number,

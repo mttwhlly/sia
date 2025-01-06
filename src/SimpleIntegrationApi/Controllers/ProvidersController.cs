@@ -1,7 +1,6 @@
 using Microsoft.AspNetCore.Mvc;
-using System.Text.Json;
-using SimpleIntegrationApi.Helpers;
-using SimpleIntegrationApi.Models.Nppes;
+using SimpleIntegrationApi.Mappers;
+using SimpleIntegrationApi.Services;
 
 namespace SimpleIntegrationApi.Controllers;
 
@@ -10,11 +9,12 @@ namespace SimpleIntegrationApi.Controllers;
 
 public class ProvidersController : ControllerBase
 {
-    private readonly IHttpClientFactory _httpClientFactory;
+    private readonly NppesApiClient _nppesApiClient;
     private readonly ILogger<ProvidersController> _logger;
-    public ProvidersController(IHttpClientFactory httpClientFactory, ILogger<ProvidersController> logger)
+
+    public ProvidersController(NppesApiClient nppesApiClient, ILogger<ProvidersController> logger)
     {
-        _httpClientFactory = httpClientFactory;
+        _nppesApiClient = nppesApiClient;
         _logger = logger;
     }
     
@@ -47,38 +47,11 @@ public class ProvidersController : ControllerBase
             if (queryParams.Count == 2)
                 return Ok(new List<object>());
 
-            var queryString = string.Join("&", queryParams.Select(x => $"{x.Key}={Uri.EscapeDataString(x.Value)}"));
-            var requestUrl = $"https://npiregistry.cms.hhs.gov/api/?{queryString}";
+            var nppesResponse = await _nppesApiClient.GetProvidersAsync(queryParams);
+
+            if (nppesResponse?.results == null || !nppesResponse.results.Any())
+                return Ok(new List<ProviderResponse>());
             
-            _logger.LogInformation("Fetching from NPPES API: {Url}", requestUrl);
-
-            var httpClient = _httpClientFactory.CreateClient();
-            var response = await httpClient.GetAsync(requestUrl);
-
-            if (!response.IsSuccessStatusCode)
-                return StatusCode(StatusCodes.Status500InternalServerError);
-
-            var content = await response.Content.ReadAsStringAsync();
-            
-            var options = new JsonSerializerOptions
-            {
-                PropertyNameCaseInsensitive = true
-            };
-            NppesResponse? nppesResponse = null;
-            try
-            {
-                nppesResponse = JsonSerializer.Deserialize<NppesResponse>(content, options);
-            }
-            catch (JsonException ex)
-            {
-                _logger.LogError(ex, "Failed to deserialize NPPES response");
-            }
-            if (nppesResponse == null || nppesResponse.results == null || !nppesResponse.results.Any())
-            {
-                return Ok(new List<object>());
-            }
-            _logger.LogInformation("Found {Count} results", nppesResponse.results.Count);
-
             var providers = ProviderMapper.MapToProviderResponses(nppesResponse);
             
             return Ok(providers);

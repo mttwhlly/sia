@@ -14,5 +14,9 @@
   <ItemGroup>
     <Compile Include="src\SimpleIntegrationApi\*.cs" />
   </ItemGroup>
+  
+  <ItemGroup>
+    <Folder Include="Utilities\" />
+  </ItemGroup>
 
 </Project>
