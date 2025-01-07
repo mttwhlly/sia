@@ -8,9 +8,10 @@ services:
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     ports: 
-      - "8080:8080"
-    networks:
-      - coolify
+      - "8080"
+    environment:
+      - PORT=8080
+      - TEST=${TEST}
 
   frontend:
     container_name: simple-integration-frontend
@@ -18,11 +19,11 @@ services:
       context: ./src/simple-integration-app-client
       dockerfile: Dockerfile
       no_cache: true
+    ports:
+      - "3000"
     environment:
       - NODE_ENV=production
       - PORT=3000
-    networks:
-      - coolify
 
   storybook:
     container_name: simple-integration-storybook
@@ -30,12 +31,9 @@ services:
       context: ./src/simple-integration-app-client
       dockerfile: Dockerfile.storybook
       no_cache: true
+    ports:
+      - "6006"
     environment:
       - NODE_ENV=production
       - PORT=6006
-    networks:
-      - coolify
-
-networks:
-  coolify:
-    external: true
+    
