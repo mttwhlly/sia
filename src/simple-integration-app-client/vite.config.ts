@@ -24,6 +24,15 @@ export default defineConfig({
       },
     }),
   ],
+  publicDir: resolve(__dirname, 'public'),
+  build: {
+    manifest: true,
+    rollupOptions: {
+      input: {
+        main: './index.html'
+      }
+    }
+  },
   resolve: {
     alias: {
       '~': resolve(__dirname, '/app'),

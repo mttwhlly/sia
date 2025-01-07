@@ -62,13 +62,13 @@ COPY --from=remix-build /app/pnpm-lock.yaml ./
 # Install production dependencies
 RUN pnpm install --prod
 
-COPY --from=storybook-build /app/storybook-static ./storybook-static
-
-# Install serve for Storybook static hosting
-RUN pnpm add -g serve
+COPY --from=storybook-build /app/storybook-static ./public/storybook
 
 # Copy and setup start script
 COPY start.sh ./
 RUN chmod +x start.sh
+
+# Expose the port that Coolify expects
+EXPOSE 8000
 
 CMD ["/bin/sh", "./start.sh"]

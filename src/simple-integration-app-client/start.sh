@@ -5,6 +5,10 @@ log() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') $1"
 }
 
+# Make sure the port is correctly set
+: "${PORT:=8000}"
+: "${HOST:=0.0.0.0}"
+
 log "Starting Remix app..."
 # Use pnpm's bin directory
 NODE_ENV=production pnpm remix-serve build/server/index.js 2>&1 | tee remix.log &
