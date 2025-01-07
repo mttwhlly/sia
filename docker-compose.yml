@@ -2,32 +2,27 @@ version: '3.8'
 
 services:
   api:
+    container_name: simple-integration-api
     build:
       context: ./src/SimpleIntegrationApi
       dockerfile: Dockerfile
-    ports:
-      - "5000:8080"
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
-      - ASPNETCORE_URLS=http://+:8080
     networks:
-      - app-network
+      - coolify
 
   frontend:
+    container_name: simple-integration-frontend
     build:
       context: ./src/simple-integration-app-client
       dockerfile: Dockerfile
-    ports:
-      - "3000:3000"  # Remix
-      - "6006:6006"  # Storybook
     environment:
       - NODE_ENV=production
-      - API_URL=http://api
     depends_on:
       - api
     networks:
-      - app-network
+      - coolify
 
 networks:
-  app-network:
-    driver: bridge
+  coolify:
+    external: true

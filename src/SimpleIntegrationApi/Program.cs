@@ -38,6 +38,9 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
+app.MapHealthChecks("/health");
+app.MapGet("/ping", () => "pong");
+
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
