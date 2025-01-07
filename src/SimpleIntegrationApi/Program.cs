@@ -30,15 +30,11 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// Only use HTTPS redirection if not behind a proxy
-if (!app.Environment.IsDevelopment())
+builder.Services.AddHttpsRedirection(options =>
 {
-    builder.Services.AddHttpsRedirection(options =>
-    {
-        options.HttpsPort = 443;
-        options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
-    });
-}
+    options.HttpsPort = 443;
+    options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+});
 
 app.UseRouting();
 app.UseCors();
