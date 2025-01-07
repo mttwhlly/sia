@@ -1,0 +1,41 @@
+version: '3.8'
+
+services:
+  api:
+    build:
+      context: ./src/SimpleIntegrationApi
+      dockerfile: Dockerfile
+    ports:
+      - "5000:80"
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Production
+      - ASPNETCORE_URLS=http://+:80
+    networks:
+      - app-network
+
+  frontend:
+    build:
+      context: ./src/simple-integration-app-client
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - API_URL=http://api
+    depends_on:
+      - api
+    networks:
+      - app-network
+
+  storybook:
+    build:
+      context: ./src/simple-integration-app-client/.storybook
+      dockerfile: Dockerfile
+    ports:
+      - "6006:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
