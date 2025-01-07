@@ -1,6 +1,8 @@
-import { vitePlugin as remix } from "@remix-run/dev";
 import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
 import tsconfigPaths from "vite-tsconfig-paths";
+import { resolve } from 'path';
+import { vitePlugin as remix } from "@remix-run/dev";
 
 declare module "@remix-run/node" {
   interface Future {
@@ -10,6 +12,8 @@ declare module "@remix-run/node" {
 
 export default defineConfig({
   plugins: [
+    react(),
+    tsconfigPaths(),
     remix({
       future: {
         v3_fetcherPersist: true,
@@ -19,8 +23,12 @@ export default defineConfig({
         v3_lazyRouteDiscovery: true,
       },
     }),
-    tsconfigPaths(),
   ],
+  resolve: {
+    alias: {
+      '~': resolve(__dirname, 'src'),
+    },
+  },
   server: {
     proxy: {
       '/api': {

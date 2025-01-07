@@ -1,15 +1,18 @@
-import {ProviderTable} from './providerTable';
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
+import ProviderTable from './providerSearch';
 
-export default {
+const meta: Meta<typeof ProviderTable> = {
+  title: 'Components/Composites/Provider Results',
   component: ProviderTable,
-  title: 'Provider Results Table',
-  argTypes: {
-    
-  },
-};
+} as Meta;
 
-export const Default = {
-  args: {
-    
-  },
-};
+export default meta;
+
+type Story = StoryObj<typeof ProviderTable>
+
+export const Default: Story = {
+    args: {
+        
+    },
+} 

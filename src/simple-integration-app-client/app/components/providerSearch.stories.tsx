@@ -1,15 +1,18 @@
+import React from 'react';
+import { Meta, StoryObj } from '@storybook/react';
 import ProviderSearch from './providerSearch';
 
-export default {
+const meta: Meta<typeof ProviderSearch> = {
+  title: 'Components/Composites/Provider Search',
   component: ProviderSearch,
-  title: 'Provider Search Form',
-  argTypes: {
-    
-  },
-};
+} as Meta;
 
-export const Default = {
-  args: {
-    
-  },
-};
+export default meta;
+
+type Story = StoryObj<typeof ProviderSearch>
+
+export const Default: Story = {
+    args: {
+        
+    },
+} 
