@@ -1,37 +1,45 @@
-FROM node:18-alpine AS development
+# Use Node 20 instead of 18
+FROM node:20-alpine AS development
 WORKDIR /app
+
+# Copy package files and install dependencies
 COPY package*.json ./
-RUN npm install --legacy-peer-deps
-# Add .dockerignore handling
+RUN npm install
+
+# Copy source files
 COPY . .
 
 # Production build for Remix
-FROM node:18-alpine AS remix-build
+FROM node:20-alpine AS remix-build
 WORKDIR /app
 COPY --from=development /app ./
-RUN npm run build
+ENV NODE_ENV=production
+# Ensure TypeScript build succeeds before Remix build
+RUN npm run typecheck && \
+    npm run build
 
 # Production build for Storybook
-FROM node:18-alpine AS storybook-build
+FROM node:20-alpine AS storybook-build
 WORKDIR /app
 COPY --from=development /app ./
-# Add --legacy-peer-deps for Storybook build
-RUN npm run build-storybook --legacy-peer-deps || npm run build-storybook
+ENV NODE_ENV=production
+# Add Vite environment variables for production build
+ENV VITE_ENV=production
+RUN npm run build-storybook
 
-# Final stage for both Remix and Storybook
-FROM node:18-alpine AS final
+# Final stage
+FROM node:20-alpine AS final
 WORKDIR /app
 
 # Set default environment variables
+ENV NODE_ENV=production
 ENV REMIX_PORT=3000
 ENV STORYBOOK_PORT=6006
 
-# Copy only necessary files from Remix build
+# Copy build artifacts and dependencies
 COPY --from=remix-build /app/build ./build
 COPY --from=remix-build /app/package*.json ./
 COPY --from=remix-build /app/node_modules ./node_modules
-
-# Copy only Storybook static files
 COPY --from=storybook-build /app/storybook-static ./storybook-static
 
 # Install serve for Storybook static hosting

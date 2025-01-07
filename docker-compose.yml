@@ -1,11 +1,10 @@
-version: '3.8'
-
 services:
   api:
     container_name: simple-integration-api
     build:
       context: ./src/SimpleIntegrationApi
       dockerfile: Dockerfile
+      no_cache: true
     environment:
       - ASPNETCORE_ENVIRONMENT=Production
     networks:
@@ -16,6 +15,7 @@ services:
     build:
       context: ./src/simple-integration-app-client
       dockerfile: Dockerfile
+      no_cache: true
     environment:
       - NODE_ENV=production
     depends_on:
