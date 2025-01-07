@@ -1,17 +1,43 @@
 #!/bin/sh
 
-# Default ports if environment variables are not set
-: "${REMIX_PORT:=3000}"
-: "${STORYBOOK_PORT:=6006}"
+# Function to log with timestamps
+log() {
+    echo "$(date '+%Y-%m-%d %H:%M:%S') $1"
+}
 
-# Start Remix app in the background
-PORT=$REMIX_PORT node build/server/index.js &
+log "Starting Remix app..."
+# Use pnpm's bin directory
+NODE_ENV=production pnpm remix-serve build/server/index.js 2>&1 | tee remix.log &
+REMIX_PID=$!
 
+log "Starting Storybook static server..."
 # Start Storybook static server in the background
-serve -s storybook-static -l $STORYBOOK_PORT &
+serve -s storybook-static -l 6006 2>&1 | tee storybook.log &
+STORYBOOK_PID=$!
 
-# Wait for any process to exit
-wait -n
+log "Services started. Monitoring..."
 
-# Exit with status of process that exited first
-exit $?
+# Function to check if a process is still running
+is_running() {
+    kill -0 $1 2>/dev/null
+    return $?
+}
+
+# Monitor both processes and log their status
+while true; do
+    if ! is_running $REMIX_PID; then
+        log "Remix app (PID $REMIX_PID) stopped unexpectedly"
+        log "Last 10 lines of Remix logs:"
+        tail -n 10 remix.log
+        exit 1
+    fi
+    
+    if ! is_running $STORYBOOK_PID; then
+        log "Storybook (PID $STORYBOOK_PID) stopped unexpectedly"
+        log "Last 10 lines of Storybook logs:"
+        tail -n 10 storybook.log
+        exit 1
+    fi
+    
+    sleep 5
+done
