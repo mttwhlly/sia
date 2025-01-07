@@ -18,7 +18,66 @@ TypeError: fetch failed
   }
 }
 [Error: Unexpected Server Error]
-GET / 500 - - 174.564 ms
+GET / 500 - - 168.260 ms
+Error: No route matches URL "/public"
+    at getInternalRouterError (/app/node_modules/.pnpm/@remix-run+router@1.21.0/node_modules/@remix-run/router/router.ts:5505:5)
+    at Object.query (/app/node_modules/.pnpm/@remix-run+router@1.21.0/node_modules/@remix-run/router/router.ts:3527:19)
+    at handleDocumentRequest (/app/node_modules/.pnpm/@remix-run+server-runtime@2.15.2_typescript@5.7.2/node_modules/@remix-run/server-runtime/dist/server.js:275:35)
+    at requestHandler (/app/node_modules/.pnpm/@remix-run+server-runtime@2.15.2_typescript@5.7.2/node_modules/@remix-run/server-runtime/dist/server.js:160:24)
+    at /app/node_modules/.pnpm/@remix-run+express@2.15.2_express@4.21.2_typescript@5.7.2/node_modules/@remix-run/express/dist/server.js:41:28
+ErrorResponseImpl {
+  status: 404,
+  statusText: 'Not Found',
+  internal: true,
+  data: 'Error: No route matches URL "/public"',
+  error: Error: No route matches URL "/public"
+      at getInternalRouterError (/app/node_modules/.pnpm/@remix-run+router@1.21.0/node_modules/@remix-run/router/router.ts:5505:5)
+      at Object.query (/app/node_modules/.pnpm/@remix-run+router@1.21.0/node_modules/@remix-run/router/router.ts:3527:19)
+      at handleDocumentRequest (/app/node_modules/.pnpm/@remix-run+server-runtime@2.15.2_typescript@5.7.2/node_modules/@remix-run/server-runtime/dist/server.js:275:35)
+      at requestHandler (/app/node_modules/.pnpm/@remix-run+server-runtime@2.15.2_typescript@5.7.2/node_modules/@remix-run/server-runtime/dist/server.js:160:24)
+      at /app/node_modules/.pnpm/@remix-run+express@2.15.2_express@4.21.2_typescript@5.7.2/node_modules/@remix-run/express/dist/server.js:41:28
+}
+GET /public 404 - - 16.547 ms
+GET /__manifest?p=%2Fpublic&version=e691c5c7 200 - - 8.228 ms
+Error: No route matches URL "/public/storybook"
+    at getInternalRouterError (/app/node_modules/.pnpm/@remix-run+router@1.21.0/node_modules/@remix-run/router/router.ts:5505:5)
+    at Object.query (/app/node_modules/.pnpm/@remix-run+router@1.21.0/node_modules/@remix-run/router/router.ts:3527:19)
+    at handleDocumentRequest (/app/node_modules/.pnpm/@remix-run+server-runtime@2.15.2_typescript@5.7.2/node_modules/@remix-run/server-runtime/dist/server.js:275:35)
+    at requestHandler (/app/node_modules/.pnpm/@remix-run+server-runtime@2.15.2_typescript@5.7.2/node_modules/@remix-run/server-runtime/dist/server.js:160:24)
+    at /app/node_modules/.pnpm/@remix-run+express@2.15.2_express@4.21.2_typescript@5.7.2/node_modules/@remix-run/express/dist/server.js:41:28
+ErrorResponseImpl {
+  status: 404,
+  statusText: 'Not Found',
+  internal: true,
+  data: 'Error: No route matches URL "/public/storybook"',
+  error: Error: No route matches URL "/public/storybook"
+      at getInternalRouterError (/app/node_modules/.pnpm/@remix-run+router@1.21.0/node_modules/@remix-run/router/router.ts:5505:5)
+      at Object.query (/app/node_modules/.pnpm/@remix-run+router@1.21.0/node_modules/@remix-run/router/router.ts:3527:19)
+      at handleDocumentRequest (/app/node_modules/.pnpm/@remix-run+server-runtime@2.15.2_typescript@5.7.2/node_modules/@remix-run/server-runtime/dist/server.js:275:35)
+      at requestHandler (/app/node_modules/.pnpm/@remix-run+server-runtime@2.15.2_typescript@5.7.2/node_modules/@remix-run/server-runtime/dist/server.js:160:24)
+      at /app/node_modules/.pnpm/@remix-run+express@2.15.2_express@4.21.2_typescript@5.7.2/node_modules/@remix-run/express/dist/server.js:41:28
+}
+GET /public/storybook 404 - - 9.932 ms
+Error: No route matches URL "/build"
+    at getInternalRouterError (/app/node_modules/.pnpm/@remix-run+router@1.21.0/node_modules/@remix-run/router/router.ts:5505:5)
+    at Object.query (/app/node_modules/.pnpm/@remix-run+router@1.21.0/node_modules/@remix-run/router/router.ts:3527:19)
+    at handleDocumentRequest (/app/node_modules/.pnpm/@remix-run+server-runtime@2.15.2_typescript@5.7.2/node_modules/@remix-run/server-runtime/dist/server.js:275:35)
+    at requestHandler (/app/node_modules/.pnpm/@remix-run+server-runtime@2.15.2_typescript@5.7.2/node_modules/@remix-run/server-runtime/dist/server.js:160:24)
+    at /app/node_modules/.pnpm/@remix-run+express@2.15.2_express@4.21.2_typescript@5.7.2/node_modules/@remix-run/express/dist/server.js:41:28
+ErrorResponseImpl {
+  status: 404,
+  statusText: 'Not Found',
+  internal: true,
+  data: 'Error: No route matches URL "/build"',
+  error: Error: No route matches URL "/build"
+      at getInternalRouterError (/app/node_modules/.pnpm/@remix-run+router@1.21.0/node_modules/@remix-run/router/router.ts:5505:5)
+      at Object.query (/app/node_modules/.pnpm/@remix-run+router@1.21.0/node_modules/@remix-run/router/router.ts:3527:19)
+      at handleDocumentRequest (/app/node_modules/.pnpm/@remix-run+server-runtime@2.15.2_typescript@5.7.2/node_modules/@remix-run/server-runtime/dist/server.js:275:35)
+      at requestHandler (/app/node_modules/.pnpm/@remix-run+server-runtime@2.15.2_typescript@5.7.2/node_modules/@remix-run/server-runtime/dist/server.js:160:24)
+      at /app/node_modules/.pnpm/@remix-run+express@2.15.2_express@4.21.2_typescript@5.7.2/node_modules/@remix-run/express/dist/server.js:41:28
+}
+GET /build 404 - - 25.918 ms
+GET /__manifest?p=%2Fbuild&version=e691c5c7 200 - - 1.091 ms
 TypeError: fetch failed
     at fetch (/app/node_modules/.pnpm/undici@6.21.0/node_modules/undici/index.js:112:13)
     at processTicksAndRejections (node:internal/process/task_queues:95:5)
@@ -38,4 +97,4 @@ TypeError: fetch failed
   }
 }
 [Error: Unexpected Server Error]
-GET / 500 - - 21.701 ms
+GET / 500 - - 17.055 ms

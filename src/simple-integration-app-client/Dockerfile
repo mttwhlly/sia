@@ -56,19 +56,23 @@ ENV HOST=0.0.0.0
 
 # Copy build artifacts and package files
 COPY --from=remix-build /app/build ./build
+COPY --from=remix-build /app/public ./public
 COPY --from=remix-build /app/package.json ./
 COPY --from=remix-build /app/pnpm-lock.yaml ./
 
+
+# Copy Storybook static files to public directory
+COPY --from=storybook-build /app/storybook-static ./public/storybook
+
 # Install production dependencies
 RUN pnpm install --prod
-
-COPY --from=storybook-build /app/storybook-static ./public/storybook
 
 # Copy and setup start script
 COPY start.sh ./
 RUN chmod +x start.sh
 
-# Expose the port that Coolify expects
-EXPOSE 8000
+# Expose both ports
+EXPOSE 8080
+EXPOSE 80
 
 CMD ["/bin/sh", "./start.sh"]
