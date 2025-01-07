@@ -18,21 +18,13 @@ services:
       context: ./src/simple-integration-app-client
       dockerfile: Dockerfile
     ports:
-      - "3000:3000"
+      - "3000:3000"  # Remix
+      - "6006:6006"  # Storybook
     environment:
       - NODE_ENV=production
       - API_URL=http://api
     depends_on:
       - api
-    networks:
-      - app-network
-
-  storybook:
-    build:
-      context: ./src/simple-integration-app-client/.storybook
-      dockerfile: Dockerfile
-    ports:
-      - "6006:80"
     networks:
       - app-network
 
