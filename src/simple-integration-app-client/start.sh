@@ -1,11 +1,14 @@
 #!/bin/sh
 
+# Default ports if environment variables are not set
+: "${REMIX_PORT:=3000}"
+: "${STORYBOOK_PORT:=6006}"
+
 # Start Remix app in the background
-node build/server/index.js &
+PORT=$REMIX_PORT node build/server/index.js &
 
 # Start Storybook static server in the background
-# Using port 6006 which is Storybook's default port
-serve -s storybook-static -l 6006 &
+serve -s storybook-static -l $STORYBOOK_PORT &
 
 # Wait for any process to exit
 wait -n

@@ -20,6 +20,10 @@ RUN npm run build-storybook
 FROM node:18-alpine AS final
 WORKDIR /app
 
+# Set default environment variables
+ENV REMIX_PORT=3000
+ENV STORYBOOK_PORT=6006
+
 # Copy Remix build artifacts
 COPY --from=remix-build /app/build ./build
 COPY --from=remix-build /app/package*.json ./
