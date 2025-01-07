@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.HttpsPolicy;
 using SimpleIntegrationApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -7,6 +8,7 @@ builder.Services.AddHttpClient();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
+
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
@@ -16,31 +18,38 @@ builder.Services.AddCors(options =>
               .AllowAnyMethod();
     });
 });
+
 builder.Services.AddHttpClient<NppesApiClient>(client =>
 {
     client.BaseAddress = new Uri("https://npiregistry.cms.hhs.gov");
 });
 
+if (!builder.Environment.IsDevelopment())
+{
+    builder.Services.Configure<HttpsRedirectionOptions>(options =>
+    {
+        options.HttpsPort = 443;
+        options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
+    });
+}
+
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
+app.UseRouting();
+app.UseCors();
+
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-builder.Services.AddHttpsRedirection(options =>
+if (!app.Environment.IsDevelopment())
 {
-    options.HttpsPort = 443;
-    options.RedirectStatusCode = StatusCodes.Status307TemporaryRedirect;
-});
+    app.UseHttpsRedirection();
+}
 
-app.UseRouting();
-app.UseCors();
-app.UseHttpsRedirection();
 app.UseAuthorization();
-
 app.MapControllers();
 
 app.Run();

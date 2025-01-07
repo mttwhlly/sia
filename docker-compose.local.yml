@@ -1,0 +1,34 @@
+services:
+  api:
+    container_name: simple-integration-api-local
+    build:
+      context: ./src/SimpleIntegrationApi
+      dockerfile: Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+    ports:
+      - "8080:8080"
+    networks:
+      - app-network
+
+  frontend:
+    container_name: simple-integration-frontend-local
+    build:
+      context: ./src/simple-integration-app-client
+      dockerfile: Dockerfile
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "3000:3000"
+      - "6006:6006"
+    volumes:
+      - ./src/simple-integration-app-client:/app
+      - /app/node_modules
+    depends_on:
+      - api
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge

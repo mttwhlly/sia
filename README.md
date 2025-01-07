@@ -8,6 +8,16 @@ Start the client application by running the following command:
 
 Docker:
 
+Development
+```bash
+# Start local development environment
+docker compose -f docker-compose.local.yml up -d
+
+# Stop local development environment
+docker compose -f docker-compose.local.yml down
+```
+
+Production (on Coolify)
 ```bash
 # Build and start all services
 docker-compose up --build
