@@ -1,14 +1,27 @@
 services:
+  nginx:
+    image: nginx:alpine
+    ports:
+      - "80:80"
+      - "443:443"  # If using HTTPS
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    depends_on:
+      - api
+      - webapp
+      - storybook
+
   api:
     container_name: simple-integration-api
     build:
       context: ./src/SimpleIntegrationApi
       dockerfile: Dockerfile
-      no_cache: true
     environment:
-      - ASPNETCORE_ENVIRONMENT=Production
-    ports: 
-      - "8080:8080"
+      - ASPNETCORE_URLS=http://+:5000
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    expose:
+      - "5000"
     networks:
       - coolify
 
@@ -17,12 +30,9 @@ services:
     build:
       context: ./src/simple-integration-app-client
       dockerfile: Dockerfile
-      no_cache: true
     environment:
-      - NODE_ENV=production
       - PORT=3000
-    ports:
-      - "3000:3000"
+      - API_URL=http://api:5000
     networks:
       - coolify
 
@@ -31,12 +41,8 @@ services:
     build:
       context: ./src/simple-integration-app-client
       dockerfile: Dockerfile.storybook
-      no_cache: true
-    environment:
-      - NODE_ENV=production
-      - PORT=6006
-    ports:
-      - "6006:6006"
+   expose:
+      - "6006"
     networks:
       - coolify
 
