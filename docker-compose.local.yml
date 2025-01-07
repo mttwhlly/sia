@@ -17,15 +17,24 @@ services:
       context: ./src/simple-integration-app-client
       dockerfile: Dockerfile
     environment:
-      - NODE_ENV=development
+      - NODE_ENV=production
+      - PORT=3000
     ports:
       - "3000:3000"
+    networks:
+      - app-network
+
+  storybook:
+    container_name: simple-integration-storybook
+    build:
+      context: ./src/simple-integration-app-client
+      dockerfile: Dockerfile.storybook
+      no_cache: true
+    environment:
+      - NODE_ENV=production
+      - PORT=6006
+    ports:
       - "6006:6006"
-    volumes:
-      - ./src/simple-integration-app-client:/app
-      - /app/node_modules
-    depends_on:
-      - api
     networks:
       - app-network
 

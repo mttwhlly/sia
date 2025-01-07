@@ -5,25 +5,17 @@ log() {
     echo "$(date '+%Y-%m-%d %H:%M:%S') $1"
 }
 
-# Make sure the port is correctly set
-: "${PORT:=8080}"
-: "${HOST:=0.0.0.0}"
+log "Starting Remix app..."
+# Use pnpm's bin directory
+NODE_ENV=production pnpm remix-serve build/server/index.js 2>&1 | tee remix.log &
+REMIX_PID=$!
 
-log "Starting Remix app on ${HOST}:${PORT}..."
-NODE_ENV=production pnpm remix-serve build/server/index.js --port $PORT --host $HOST 2>&1 | tee app.log &
-APP_PID=$!
+log "Starting Storybook static server..."
+# Start Storybook static server in the background
+serve -s storybook-static -l 6006 2>&1 | tee storybook.log &
+STORYBOOK_PID=$!
 
-# Give process a moment to start up
-sleep 5
-
-# Initial check to make sure process started successfully
-if ! kill -0 $APP_PID 2>/dev/null; then
-    log "ERROR: App failed to start! Check logs:"
-    cat app.log
-    exit 1
-fi
-
-log "Service started successfully. Monitoring..."
+log "Services started. Monitoring..."
 
 # Function to check if a process is still running
 is_running() {
@@ -31,12 +23,19 @@ is_running() {
     return $?
 }
 
-# Monitor the process and log its status
+# Monitor both processes and log their status
 while true; do
-    if ! is_running $APP_PID; then
-        log "App (PID $APP_PID) stopped unexpectedly"
-        log "Last 10 lines of logs:"
-        tail -n 10 app.log
+    if ! is_running $REMIX_PID; then
+        log "Remix app (PID $REMIX_PID) stopped unexpectedly"
+        log "Last 10 lines of Remix logs:"
+        tail -n 10 remix.log
+        exit 1
+    fi
+    
+    if ! is_running $STORYBOOK_PID; then
+        log "Storybook (PID $STORYBOOK_PID) stopped unexpectedly"
+        log "Last 10 lines of Storybook logs:"
+        tail -n 10 storybook.log
         exit 1
     fi
     

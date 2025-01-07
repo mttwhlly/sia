@@ -4,11 +4,6 @@ import tsconfigPaths from "vite-tsconfig-paths";
 import { resolve } from 'path';
 import { vitePlugin as remix } from "@remix-run/dev";
 
-declare module "@remix-run/node" {
-  interface Future {
-    v3_singleFetch: true;
-  }
-}
 
 export default defineConfig({
   plugins: [
@@ -24,26 +19,24 @@ export default defineConfig({
       },
     }),
   ],
-  publicDir: resolve(__dirname, 'public'),
+  publicDir: 'public',
   build: {
     manifest: true,
     rollupOptions: {
-      input: {
-        main: './index.html'
+      // Ensure proper resolution of commonjs modules
+      onwarn: (warning, warn) => {
+        if (warning.code === 'MODULE_LEVEL_DIRECTIVE') return
+        warn(warning)
       }
     }
   },
   resolve: {
     alias: {
-      '~': resolve(__dirname, '/app'),
+      '~': '/app',
     },
   },
   server: {
-    proxy: {
-      '/api': {
-        target: 'https://localhost:5204',
-        secure: false
-      }
-    }
+    port: 3000,
+    host: '0.0.0.0'
   }
 });

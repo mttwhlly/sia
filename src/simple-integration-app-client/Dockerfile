@@ -1,78 +1,66 @@
-FROM node:20-alpine AS development
+# Base stage with common setup
+FROM node:20-alpine AS base
+
+# Set working directory
 WORKDIR /app
 
-# Install pnpm and configure global directory
-RUN npm install -g pnpm
-ENV PNPM_HOME=/root/.local/share/pnpm
+# Setup PNPM
+ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 RUN mkdir -p $PNPM_HOME
+RUN corepack enable
 
-# Copy package files
-COPY package*.json pnpm-lock.yaml ./
+# Copy package files for dependency installation
+COPY package.json pnpm-lock.yaml ./
 
-# Install dependencies
-RUN pnpm install
+# Add packageManager field to avoid corepack warning
+RUN node -e "const pkg=require('./package.json'); pkg.packageManager='pnpm@9.15.3'; require('fs').writeFileSync('package.json', JSON.stringify(pkg, null, 2))"
 
-# Copy source files
+# Production dependencies stage
+FROM base AS prod-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --prod --frozen-lockfile
+
+# Development dependencies stage
+FROM base AS dev-deps
+RUN --mount=type=cache,id=pnpm,target=/pnpm/store pnpm install --frozen-lockfile
+
+# Build stage
+FROM dev-deps AS builder
+# Set build environment
+ENV NODE_ENV=production
+ENV REMIX_BUILD_SERVER_PORT=3000
+ENV REMIX_BUILD_MODE=production
+
+# Copy source code
 COPY . .
 
-# Production build for Remix
-FROM node:20-alpine AS remix-build
-WORKDIR /app
-COPY --from=development /app ./
-ENV NODE_ENV=production
-ENV PNPM_HOME=/root/.local/share/pnpm
-ENV PATH="${PATH}:${PNPM_HOME}"
-RUN mkdir -p $PNPM_HOME
-RUN npm install -g pnpm
+# Build the app
 RUN pnpm run build
 
-# Production build for Storybook
-FROM node:20-alpine AS storybook-build
-WORKDIR /app
-COPY --from=development /app ./
-ENV NODE_ENV=production
-ENV PNPM_HOME=/root/.local/share/pnpm
-ENV PATH="${PATH}:${PNPM_HOME}"
-RUN mkdir -p $PNPM_HOME
-RUN npm install -g pnpm
-RUN pnpm run build-storybook
-
-# Final stage
-FROM node:20-alpine AS final
+# Production stage
+FROM node:20-alpine AS runner
 WORKDIR /app
 
-# Install pnpm and configure global directory
-RUN npm install -g pnpm
-ENV PNPM_HOME=/root/.local/share/pnpm
+# Setup PNPM in production stage
+ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 RUN mkdir -p $PNPM_HOME
+RUN corepack enable
 
-# Set default environment variables
+# Copy production dependencies
+COPY --from=prod-deps /app/node_modules ./node_modules
+COPY --from=builder /app/build ./build
+COPY --from=builder /app/public ./public
+COPY --from=builder /app/package.json ./package.json
+
+# Set production environment
 ENV NODE_ENV=production
-ENV REMIX_PORT=3000
-ENV STORYBOOK_PORT=6006
-ENV HOST=0.0.0.0 
+ENV PORT=3000
+ENV HOST=0.0.0.0
+ENV REMIX_BUILD_MODE=production
 
-# Copy build artifacts and package files
-COPY --from=remix-build /app/build ./build
-COPY --from=remix-build /app/public ./public
-COPY --from=remix-build /app/package.json ./
-COPY --from=remix-build /app/pnpm-lock.yaml ./
+# Expose port
+EXPOSE 3000
 
-
-# Copy Storybook static files to public directory
-COPY --from=storybook-build /app/storybook-static ./public/storybook
-
-# Install production dependencies
-RUN pnpm install --prod
-
-# Copy and setup start script
-COPY start.sh ./
-RUN chmod +x start.sh
-
-# Expose both ports
-EXPOSE 8080
-EXPOSE 80
-
-CMD ["/bin/sh", "./start.sh"]
+# Start the app
+CMD ["pnpm", "run", "start"]
