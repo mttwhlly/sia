@@ -35,6 +35,8 @@ services:
     environment:
       - NODE_ENV=production
       - PORT=6006
+    ports:
+      - "6006:6006"
     networks:
       - coolify
 
