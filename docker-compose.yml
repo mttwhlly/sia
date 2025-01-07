@@ -25,7 +25,7 @@ services:
     networks:
       - coolify
 
-  frontend:
+  webapp:
     container_name: simple-integration-frontend
     build:
       context: ./src/simple-integration-app-client
