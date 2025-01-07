@@ -1,6 +1,6 @@
 import React from 'react';
 import { Meta, StoryObj } from '@storybook/react';
-import ProviderTable from './providerSearch';
+import ProviderTable from '../app/components/providerSearch';
 
 const meta: Meta<typeof ProviderTable> = {
   title: 'Components/Composites/Provider Results',

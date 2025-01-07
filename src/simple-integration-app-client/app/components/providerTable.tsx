@@ -111,7 +111,7 @@ export const columns: ColumnDef<Provider>[] = [
   },
 ]
 
-export function ProviderTable({ providers }: ProviderTableProps) {
+export default function ProviderTable({ providers }: ProviderTableProps) {
   const [sorting, setSorting] = React.useState<SortingState>([])
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []

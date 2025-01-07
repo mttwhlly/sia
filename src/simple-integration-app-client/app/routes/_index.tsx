@@ -3,16 +3,7 @@ import { useLoaderData } from '@remix-run/react'
 import { LoaderFunctionArgs, json } from '@remix-run/node'
 import { Hospital } from 'lucide-react'
 import ProviderSearch from '~/components/providerSearch'
-import {ProviderTable} from '~/components/providerTable'
-
-interface Provider {
-  name: string,
-  npi: string,
-  address: string,
-  city: string,
-  state: string,
-  zip: string,
-}
+import ProviderTable from '~/components/providerTable'
 
 export const meta: MetaFunction = () => {
   return [
@@ -35,8 +26,6 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
 
 export default function Index() {
   const { providers } = useLoaderData<typeof loader>()
-
-  console.log(providers)
 
   return (
     <>
