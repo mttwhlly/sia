@@ -17,7 +17,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
   const params = url.searchParams
 
   const response = await fetch(
-    `http://localhost:5204/providers?${params.toString()}`
+    `https://z880ssckg4s4okwggsk8wswg.mttwhlly.cc/?${params.toString()}`
   )
   const providers = await response.json()
 
