@@ -62,7 +62,7 @@ export const columns: ColumnDef<Provider>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="text-xs">{row.getValue('name')}</div>,
+    cell: ({ row }) => <div className="text-sm">{row.getValue('name')}</div>,
   },
   {
     accessorKey: 'address',
@@ -77,7 +77,7 @@ export const columns: ColumnDef<Provider>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="text-xs">{row.getValue('address')}</div>,
+    cell: ({ row }) => <div className="text-sm">{row.getValue('address')}</div>,
   },
   {
     accessorKey: 'city',
@@ -92,7 +92,7 @@ export const columns: ColumnDef<Provider>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="text-xs">{row.getValue('city')}</div>,
+    cell: ({ row }) => <div className="text-sm">{row.getValue('city')}</div>,
   },
   {
     accessorKey: 'state',
@@ -107,7 +107,7 @@ export const columns: ColumnDef<Provider>[] = [
         </Button>
       )
     },
-    cell: ({ row }) => <div className="text-xs">{row.getValue('state')}</div>,
+    cell: ({ row }) => <div className="text-sm">{row.getValue('state')}</div>,
   },
     {
     accessorKey: 'npi',
@@ -115,14 +115,13 @@ export const columns: ColumnDef<Provider>[] = [
       return (
         <Button
           variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+          className='hover:bg-transparent cursor-default'
         >
           NPI Number
-          <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
-    cell: ({ row }) => <div className="text-xs">{row.getValue('npi')}</div>,
+    cell: ({ row }) => <div className="text-sm text-blue-800 bg-neutral-100 font-mono font-medium text-center py-1 px-2">{row.getValue('npi')}</div>,
   },
 ]
 
@@ -177,12 +176,12 @@ export default function ProviderTable({ providers }: ProviderTableProps) {
               </TableRow>
             ))}
           </TableHeader>
-          <TableBody>
+          <TableBody className='font-normal'>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
                   key={row.id}
-                  className='hover:bg-neutral-100'
+                  className='text-neutral-600 hover:bg-neutral-100'
                 >
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id} className='px-4'>
