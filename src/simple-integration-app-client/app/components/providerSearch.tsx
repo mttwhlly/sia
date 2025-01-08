@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { Form, useSearchParams, useNavigation } from '@remix-run/react'
 import { usStates } from '~/lib/constants'
 import { Button } from '~/components/ui/button'
@@ -18,20 +18,38 @@ import { Select,
 
 
 export default function ProviderSearch() {
-      const [searchParams] = useSearchParams()
+      const [searchParams, setSearchParams] = useSearchParams()
       const navigation = useNavigation()
       const [selectedState, setSelectedState] = useState(searchParams.get('state') || '')
+      const formRef = useRef<HTMLFormElement>(null)
 
       const defaultFirstName = searchParams.get('firstName') || ''
       const defaultLastName = searchParams.get('lastName') || ''
       const defaultCity = searchParams.get('city') || ''
 
       const isLoading = navigation.state === "loading"
+
+      const handleReset = () => {
+        // Reset form inputs
+        if (formRef.current) {
+          formRef.current.reset()
+        }
+        
+        // Clear URL parameters
+        setSearchParams({})
+        
+        // Reset select component state
+        setSelectedState('')
+      }
+
+      const sanitizeInput = (value: string) => {
+        return value.replace(/[^a-zA-Z\s]/g, '').trim();
+      };
       
     return (
       <Card>
         <CardHeader>
-          <CardDescription>Search for a US healthcare provider on the <a href="https://npiregistry.cms.hhs.gov/" >NPPES NPI Registry</a></CardDescription>
+          <CardDescription>Search for a US healthcare provider on the <a className="underline" href="https://npiregistry.cms.hhs.gov/" >NPPES NPI Registry</a></CardDescription>
           </CardHeader>
           <CardContent>
         <Form
@@ -142,6 +160,19 @@ export default function ProviderSearch() {
         >
           {isLoading ? 'Searching...' : 'Search'}
         </Button>
+
+        <Button
+            type="button"
+            variant="outline"
+            onClick={handleReset}
+            className="py-2 px-4 rounded"
+            aria-describedby="reset-help"
+          >
+            Reset
+          </Button>
+        <p id="reset-help" className="sr-only">
+          Press to reset the form
+        </p>
 
         <p id="submit-help" className="sr-only">
           Press to submit the form and search for providers based on your

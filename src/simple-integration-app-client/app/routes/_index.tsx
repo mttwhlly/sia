@@ -1,7 +1,7 @@
 import type { MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { LoaderFunctionArgs, json } from '@remix-run/node'
-import { Hospital } from 'lucide-react'
+import { Hospital, ScanFace } from 'lucide-react'
 import ProviderSearch from '~/components/providerSearch'
 import ProviderTable from '~/components/providerTable'
 
@@ -75,8 +75,8 @@ export default function Index() {
   return (
     <>
       <header className="border-b">
-        <h1 className="p-6 max-w-2xl mx-auto text-lg text-blue-900 font-bold">
-          <Hospital className='inline pb-1' /> Simple Integration Application
+        <h1 className="p-6 max-w-3xl mx-auto text-lg text-blue-900 font-bold">
+          <ScanFace className='inline pb-1' /> Simple Integration Application
         </h1>
       </header>
       <main className="p-6 max-w-3xl mx-auto">
