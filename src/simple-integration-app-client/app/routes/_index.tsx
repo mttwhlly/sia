@@ -13,15 +13,37 @@ export const meta: MetaFunction = () => {
 }
 
 export const loader = async ({ request }: LoaderFunctionArgs) => {
+  try {
   const url = new URL(request.url)
   const params = url.searchParams
 
   const response = await fetch(
     `https://z880ssckg4s4okwggsk8wswg.mttwhlly.cc/?${params.toString()}`
   )
-  const providers = await response.json()
-
-  return json({ providers})
+      // Check if response is ok
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`)
+      }
+  
+      // Get the text first to help debug any JSON parsing issues
+      const text = await response.text()
+      
+      // Handle empty response
+      if (!text) {
+        return json({ providers: [] })
+      }
+  
+      try {
+        const providers = JSON.parse(text)
+        return json({ providers })
+      } catch (parseError) {
+        console.error('JSON Parse Error:', parseError, 'Response:', text)
+        return json({ providers: [] }, { status: 500 })
+      }
+} catch (error) {
+  console.error('Loader Error:', error)
+    return json({ providers: [] }, { status: 500 })
+}
 }
 
 export default function Index() {
