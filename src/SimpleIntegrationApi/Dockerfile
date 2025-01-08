@@ -24,7 +24,7 @@ WORKDIR /app
 COPY --from=build /app/publish .
 
 # Expose port 80 (optional, adjust as needed)
-EXPOSE 80
+EXPOSE 8080
 
 # Set the entry point to run the application
 ENTRYPOINT ["dotnet", "SimpleIntegrationApi.dll"]
