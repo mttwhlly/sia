@@ -8,7 +8,7 @@ This design document addresses the architectural requirements, provides a high-l
 
 ## 2. Context
 
-![System Context Diagram](./assets/system-context-diagram.png)
+![System Context Diagram](../assets/system-context-diagram.png)
 
 ## 3. Goals and Non-Goals
 
@@ -33,7 +33,7 @@ We're going to build the Simple Integration Application in a monorepo with React
 
 ### Container Diagram
 
-![Container Diagram](./assets/container-diagram.png)
+![Container Diagram](../assets/container-diagram.png)
 
 ### Architectural Style
 
