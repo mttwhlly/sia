@@ -23,6 +23,9 @@ importers:
       '@radix-ui/react-slot':
         specifier: ^1.1.1
         version: 1.1.1(@types/react@18.3.18)(react@18.3.1)
+      '@remix-run/css-bundle':
+        specifier: ^2.15.2
+        version: 2.15.2
       '@remix-run/node':
         specifier: ^2.15.2
         version: 2.15.2(typescript@5.7.2)
@@ -1035,6 +1038,10 @@ packages:
 
   '@radix-ui/rect@1.1.0':
     resolution: {integrity: sha512-A9+lCBZoaMJlVKcRBz2YByCG+Cp2t6nAnMnNba+XiWxnj6r4JUFqfsgwocMBZU9LPtdxC6wB56ySYpc7LQIoJg==}
+
+  '@remix-run/css-bundle@2.15.2':
+    resolution: {integrity: sha512-/GX8qPfUa9lZI0rx270/JH8oq4X3KFy7FlYV5dSB9pJjc5uR0BVkfb5htpS/U55o7d0qVwa28Wa9y5Z8D01CEQ==}
+    engines: {node: '>=18.0.0'}
 
   '@remix-run/dev@2.15.2':
     resolution: {integrity: sha512-o8lix8t4GBhtXjo/G1IzwtHVW5GRMs7amtFtBHiR1bhSyK7VyX5qGtTDmJyny5QDv83pxaLOCiE0dUng2BCoyQ==}
@@ -5351,6 +5358,8 @@ snapshots:
       '@types/react-dom': 18.3.5(@types/react@18.3.18)
 
   '@radix-ui/rect@1.1.0': {}
+
+  '@remix-run/css-bundle@2.15.2': {}
 
   '@remix-run/dev@2.15.2(@remix-run/react@2.15.2(react-dom@18.3.1(react@18.3.1))(react@18.3.1)(typescript@5.7.2))(@remix-run/serve@2.15.2(typescript@5.7.2))(@types/node@22.10.4)(typescript@5.7.2)(vite@5.4.11(@types/node@22.10.4))':
     dependencies:

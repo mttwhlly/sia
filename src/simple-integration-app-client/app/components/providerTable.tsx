@@ -65,6 +65,21 @@ export const columns: ColumnDef<Provider>[] = [
     cell: ({ row }) => <div className="text-xs">{row.getValue('name')}</div>,
   },
   {
+    accessorKey: 'address',
+    header: ({ column }) => {
+      return (
+        <Button
+          variant="ghost"
+          onClick={() => column.toggleSorting(column.getIsSorted() === 'asc')}
+        >
+          Address
+          <ArrowUpDown className="ml-2 h-4 w-4" />
+        </Button>
+      )
+    },
+    cell: ({ row }) => <div className="text-xs">{row.getValue('address')}</div>,
+  },
+  {
     accessorKey: 'city',
     header: ({ column }) => {
       return (
@@ -215,7 +230,7 @@ export default function ProviderTable({ providers }: ProviderTableProps) {
         </div>
         <div className="flex w-[100px] items-center text-sm font-medium">
           Page {table.getState().pagination.pageIndex + 1} of{" "}
-          {table.getPageCount()}
+          {table.getPageCount() ? table.getPageCount() : 1}
         </div>
         <div className="flex items-center space-x-2">
           <Button

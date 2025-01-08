@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { Form, useSearchParams } from '@remix-run/react'
+import { Form, useSearchParams, useNavigation } from '@remix-run/react'
 import { usStates } from '~/lib/constants'
 import { Button } from '~/components/ui/button'
 import { Card,
@@ -18,13 +18,15 @@ import { Select,
 
 
 export default function ProviderSearch() {
-      const [isSubmitting, setIsSubmitting] = useState(false)
       const [searchParams] = useSearchParams()
+      const navigation = useNavigation()
+      const [selectedState, setSelectedState] = useState(searchParams.get('state') || '')
 
       const defaultFirstName = searchParams.get('firstName') || ''
       const defaultLastName = searchParams.get('lastName') || ''
       const defaultCity = searchParams.get('city') || ''
-      const defaultState = searchParams.get('state') || ''
+
+      const isLoading = navigation.state === "loading"
       
     return (
       <Card>
@@ -44,7 +46,7 @@ export default function ProviderSearch() {
           <div>
             <Label
               htmlFor="firstName"
-            //   className="block text-sm font-medium mb-1"
+              className="block text-sm font-medium mb-1"
             >
               First Name
             </Label>
@@ -108,7 +110,8 @@ export default function ProviderSearch() {
               name="state"
               aria-describedby="state-help"
               aria-label="State"
-              defaultValue={defaultState}
+              defaultValue={selectedState}
+              onValueChange={setSelectedState}
             >
                 <SelectTrigger>
                     <SelectValue placeholder="Select a state" />
@@ -116,9 +119,9 @@ export default function ProviderSearch() {
                 <SelectContent>
                     <SelectGroup>
                         <SelectLabel>Select a state</SelectLabel>
-                        {usStates.map(({ value, label }) => (
-                            <SelectItem key={value} value={value}>
-                                {label}
+                        {usStates.map((state) => (
+                            <SelectItem key={state.value} value={state.value}>
+                                {state.label}
                             </SelectItem>
                         ))}
                     </SelectGroup>
@@ -132,12 +135,12 @@ export default function ProviderSearch() {
 
         <Button
           type="submit"
-          className="bg-blue-900 text-white py-2 px-4 rounded"
-          disabled={isSubmitting}
+          className="bg-blue-900 text-white py-2 px-4 rounded hover:bg-blue-950"
+          disabled={isLoading}
           aria-live="assertive"
           aria-describedby="submit-help"
         >
-          Search Providers
+          {isLoading ? 'Searching...' : 'Search'}
         </Button>
 
         <p id="submit-help" className="sr-only">
