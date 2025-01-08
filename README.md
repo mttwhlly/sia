@@ -2,7 +2,7 @@
 
 ## Overview
 
-See the [High-Level Design document](./documents/hl.md) for an overview of the Simple Integration Application.
+See the [High-Level Design document](./documents/design.md) for an overview of the Simple Integration Application.
 
 ## Getting Started
 
