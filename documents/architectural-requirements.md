@@ -1,6 +1,6 @@
 # Architectural Requirements
 
-This is a living document with the architectural requirements of the Simple Integration Application for Paychex (ExpenseWire) interview.
+This is a living document with the architectural requirements of the Simple Integration Application.
 
 For more information, check out the [Project Spec](./project-spec.md).
 
