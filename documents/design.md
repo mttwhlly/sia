@@ -69,4 +69,4 @@ We're going to build the Simple Integration Application in a monorepo with React
 - [Figma UI Designs (for shadcn/ui)](https://www.shadcndesign.com/)
 - [Architectural Requirements Document](./architectural-requirements.md)
 - [Domain Model](./domain-model.md)
-- [ADR1: Using React and .NET](./adr1.md)
+<!--- [ADR1: Using React and .NET](./adr1.md)-->
