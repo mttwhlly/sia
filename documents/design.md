@@ -2,7 +2,7 @@
 
 ## 1. Overview
 
-This document outlines the high-level architecture design for Simple Integration Application for Paychex (ExpenseWire) interview.
+This document outlines the high-level architecture design for the Simple Integration Application.
 
 This design document addresses the architectural requirements, provides a high-level design, considers alternatives, and outlines a timeline for implementation.
 
@@ -60,12 +60,9 @@ We're going to build the Simple Integration Application in a monorepo with React
 1. **Vanilla HTML/CSS with minimal JS**: Given the simplicity of the acceptance criteria, removing all overhead could achieve a quality result with maximum simplicity. While preferential, using a framework in use by the company would demonstrate familiarity with the technologies.
 2. **Next.js**: Although Next.js provides a pleasant developer experience, it is not used by the company (heavily .NET for backend especially) and includes drawbacks if not using Vercel hosting (and high costs at scale if using).
 
-### Open Questions
+<!--### 6. Open Questions-->
 
-- **Programming language/framework approach**: How does the team approach the decision to use a new framework or language?
-- **User experience**: How does the way the application is used by the end user affect the decision to use a specific technology and implement features?
-
-## 8. Appendix
+## 6. Appendix
 
 ### References
 
