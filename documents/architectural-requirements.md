@@ -20,4 +20,4 @@ For more information, check out the [Project Spec](./project-spec.md).
   - Docker
 - Achieving performance is a key factor given the centrality of data fetching in the application.
 - The application should be easy to use and intuitive.
-- The application (and its code) need to be shared with audience presented, so both the app and code should be deployed to a public URL.
+- The application (and its code) need to be shared, so both the app and code should be deployed to a public URL.
