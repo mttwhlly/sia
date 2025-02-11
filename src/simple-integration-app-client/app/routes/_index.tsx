@@ -20,7 +20,7 @@ export const loader = async ({ request }: LoaderFunctionArgs) => {
     console.log('Fetching from URL:', `https://occ8ko8kw44kckgk8sw8wk84.mttwhlly.cc/providers?${params.toString()}`)
     
     const response = await fetch(
-      `https://z880ssckg4s4okwggsk8wswg.mttwhlly.cc/providers?${params.toString()}`
+      `https://occ8ko8kw44kckgk8sw8wk84.mttwhlly.cc/providers?${params.toString()}`
     )
     
     console.log('Response status:', response.status)
