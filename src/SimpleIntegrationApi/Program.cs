@@ -9,15 +9,15 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-builder.Services.AddCors(options =>
-{
-    options.AddDefaultPolicy(policy =>
-    {
-        policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "https://hgswscsc8g88koc0gso880o8.mttwhlly.cc")
-              .AllowAnyHeader()
-              .AllowAnyMethod();
-    });
-});
+// builder.Services.AddCors(options =>
+// {
+//     options.AddDefaultPolicy(policy =>
+//     {
+//         policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "https://hgswscsc8g88koc0gso880o8.mttwhlly.cc")
+//               .AllowAnyHeader()
+//               .AllowAnyMethod();
+//     });
+// });
 
 builder.Services.AddHttpClient<NppesApiClient>(client =>
 {
@@ -27,7 +27,7 @@ builder.Services.AddHttpClient<NppesApiClient>(client =>
 var app = builder.Build();
 
 app.UseRouting();
-app.UseCors();
+// app.UseCors();
 
 if (app.Environment.IsDevelopment())
 {
