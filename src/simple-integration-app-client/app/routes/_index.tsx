@@ -4,6 +4,7 @@ import { LoaderFunctionArgs, json } from '@remix-run/node'
 import { ScanFace } from 'lucide-react'
 import ProviderSearch from '../components/providerSearch'
 import ProviderTable from '../components/providerTable'
+import type { Provider } from '../types/providers'
 
 export const meta: MetaFunction = () => {
   return [
@@ -13,7 +14,8 @@ export const meta: MetaFunction = () => {
 }
 
 // Constants
-const API_BASE_URL = 'https://occ8ko8kw44kckgk8sw8wk84.mttwhlly.cc'
+const API_BASE_URL = 'http://localhost:5204'
+// const API_BASE_URL = 'https://occ8ko8kw44kckgk8sw8wk84.mttwhlly.cc'
 const API_TIMEOUT = 5000 // 5 seconds timeout
 
 // Type definitions
@@ -21,13 +23,6 @@ type ApiError = {
   name?: string;
   message: string;
   status?: number;
-}
-
-type Provider = {
-  // Add your provider type properties here
-  id: string;
-  name: string;
-  // ... other properties
 }
 
 type LoaderData = {

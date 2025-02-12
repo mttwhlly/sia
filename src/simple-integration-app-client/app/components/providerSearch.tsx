@@ -17,46 +17,49 @@ import { Select,
     SelectValue, } from '~/components/ui/select'
 
 
-export default function ProviderSearch() {
+    export default function ProviderSearch() {
       const [searchParams, setSearchParams] = useSearchParams()
       const navigation = useNavigation()
       const [selectedState, setSelectedState] = useState(searchParams.get('state') || '')
-      const formRef = useRef<HTMLFormElement>(null)
-
-      const defaultFirstName = searchParams.get('firstName') || ''
-      const defaultLastName = searchParams.get('lastName') || ''
-      const defaultCity = searchParams.get('city') || ''
-
+      const [firstName, setFirstName] = useState(searchParams.get('firstName') || '')
+      const [lastName, setLastName] = useState(searchParams.get('lastName') || '')
+      const [city, setCity] = useState(searchParams.get('city') || '')
+      
       const isLoading = navigation.state === "loading"
-
+    
       const handleReset = () => {
-        // Reset form inputs
-        if (formRef.current) {
-          formRef.current.reset()
-        }
+        // Reset all form states
+        setSelectedState('')
+        setFirstName('')
+        setLastName('')
+        setCity('')
         
         // Clear URL parameters
         setSearchParams({})
-        
-        // Reset select component state
-        setSelectedState('')
       }
-
-      const sanitizeInput = (value: string) => {
-        return value.replace(/[^a-zA-Z\s]/g, '').trim();
-      };
-      
-    return (
-      <Card>
-        <CardHeader>
-          <CardDescription>Search for a US healthcare provider on the <a className="underline" href="https://npiregistry.cms.hhs.gov/" >NPPES NPI Registry</a></CardDescription>
+    
+      const handleSubmit = (e) => {
+        e.preventDefault()
+        const params = new URLSearchParams()
+        if (firstName) params.set('firstName', firstName)
+        if (lastName) params.set('lastName', lastName)
+        if (city) params.set('city', city)
+        if (selectedState) params.set('state', selectedState)
+        setSearchParams(params)
+      }
+          
+      return (
+        <Card>
+          <CardHeader>
+            <CardDescription>Search for a US healthcare provider on the <a className="underline" href="https://npiregistry.cms.hhs.gov/">NPPES NPI Registry</a></CardDescription>
           </CardHeader>
           <CardContent>
-        <Form
-        method="get"
-        className="grid gap-4"
-        aria-labelledby="form-title"
-      >
+            <Form
+              method="get"
+              className="grid gap-4"
+              aria-labelledby="form-title"
+              onSubmit={handleSubmit}
+            >
         <h2 id="form-title" className="sr-only">
           Provider Search Form
         </h2>
@@ -69,13 +72,13 @@ export default function ProviderSearch() {
               First Name
             </Label>
             <Input
-              id="firstName"
-              name="firstName"
-              type="text"
-              aria-describedby="firstName-help"
-              defaultValue={defaultFirstName}
-              className='capitalize'
-            />
+            id="firstName"
+            name="firstName"
+            type="text"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            className='capitalize'
+          />
             <p id="firstName-help" className="text-xs text-gray-500">
               Enter your first name
             </p>
@@ -89,15 +92,14 @@ export default function ProviderSearch() {
               Last Name <span className="text-red-600">*</span>
             </Label>
             <Input
-              id="lastName"
-              name="lastName"
-              required
-              type="text"
-              aria-required="true"
-              aria-describedby="lastName-help"
-              defaultValue={defaultLastName}
-              className='capitalize'
-            />
+            id="lastName"
+            name="lastName"
+            required
+            type="text"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            className='capitalize'
+          />
             <p id="lastName-help" className="text-xs text-gray-500">
               Enter your last name (this field is required)
             </p>
@@ -108,13 +110,13 @@ export default function ProviderSearch() {
               City
             </Label>
             <Input
-              id="city"
-              name="city"
-              type="text"
-              className="w-full p-2 border rounded capitalize"
-              aria-describedby="city-help"
-              defaultValue={defaultCity}
-            />
+            id="city"
+            name="city"
+            type="text"
+            value={city}
+            onChange={(e) => setCity(e.target.value)}
+            className='capitalize'
+          />
             <p id="city-help" className="text-xs text-gray-500">
               Enter your city
             </p>
@@ -125,12 +127,10 @@ export default function ProviderSearch() {
               State
             </Label>
             <Select
-              name="state"
-              aria-describedby="state-help"
-              aria-label="State"
-              defaultValue={selectedState}
-              onValueChange={setSelectedState}
-            >
+            name="state"
+            value={selectedState}
+            onValueChange={setSelectedState}
+          >
                 <SelectTrigger>
                     <SelectValue placeholder="Select a state" />
                 </SelectTrigger>
