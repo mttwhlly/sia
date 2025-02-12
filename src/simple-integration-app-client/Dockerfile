@@ -42,11 +42,11 @@ RUN pnpm run build
 FROM node:20-alpine AS runner
 WORKDIR /app
 
-# Setup PNPM in production stage
+# Setup PNPM without corepack
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 RUN mkdir -p $PNPM_HOME
-RUN corepack enable
+RUN npm install -g pnpm@9.15.3
 
 # Copy production dependencies
 COPY --from=prod-deps /app/node_modules ./node_modules
