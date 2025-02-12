@@ -4,11 +4,12 @@ FROM node:20-alpine AS base
 # Set working directory
 WORKDIR /app
 
-# Setup PNPM
+# Setup PNPM without corepack
 ENV PNPM_HOME="/pnpm"
 ENV PATH="${PATH}:${PNPM_HOME}"
 RUN mkdir -p $PNPM_HOME
-RUN corepack enable
+# Remove corepack and install pnpm directly
+RUN npm install -g pnpm@9.15.3
 
 # Copy package files for dependency installation
 COPY package.json pnpm-lock.yaml ./
