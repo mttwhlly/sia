@@ -13,18 +13,9 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        if (builder.Environment.IsDevelopment())
-        {
-            policy.WithOrigins("http://localhost:3000")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        }
-        else
-        {
-        policy.WithOrigins("https://hgswscsc8g88koc0gso880o8.mttwhlly.cc")
+        policy.WithOrigins("http://localhost:3000", "https://hgswscsc8g88koc0gso880o8.mttwhlly.cc")
               .AllowAnyHeader()
               .AllowAnyMethod();
-        }
     });
 });
 
