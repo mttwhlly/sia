@@ -1,14 +1,14 @@
 import type { MetaFunction } from '@remix-run/node'
 import { useLoaderData } from '@remix-run/react'
 import { LoaderFunctionArgs, json } from '@remix-run/node'
-import { ScanFace } from 'lucide-react'
+import { Stethoscope } from 'lucide-react'
 import ProviderSearch from '../components/providerSearch'
 import ProviderTable from '../components/providerTable'
 import type { Provider } from '../types/providers'
 
 export const meta: MetaFunction = () => {
   return [
-    { title: 'Simple Integration App' },
+    { title: 'Provider Search' },
     { name: 'description', content: 'Find healthcare providers' },
   ]
 }
@@ -128,7 +128,7 @@ export default function Index() {
     <>
       <header className="border-b">
         <h1 className="p-6 max-w-3xl mx-auto text-lg text-blue-900 font-bold">
-          <ScanFace className='inline pb-1' /> Simple Integration Application
+          <Stethoscope className='inline pb-1' /> Provider Search
         </h1>
       </header>
       <main className="p-6 max-w-3xl mx-auto">

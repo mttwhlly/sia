@@ -1,4 +1,4 @@
-import { useRef, useState } from 'react'
+import { useState } from 'react'
 import { Form, useSearchParams, useNavigation } from '@remix-run/react'
 import { usStates } from '~/lib/constants'
 import { Button } from '~/components/ui/button'
@@ -80,7 +80,7 @@ import { Select,
             className='capitalize'
           />
             <p id="firstName-help" className="text-xs text-gray-500">
-              Enter your first name
+              Enter first name
             </p>
           </div>
 
@@ -101,7 +101,7 @@ import { Select,
             className='capitalize'
           />
             <p id="lastName-help" className="text-xs text-gray-500">
-              Enter your last name (this field is required)
+              Enter last name (this field is required)
             </p>
           </div>
 
@@ -118,7 +118,7 @@ import { Select,
             className='capitalize'
           />
             <p id="city-help" className="text-xs text-gray-500">
-              Enter your city
+              Enter city
             </p>
           </div>
 
@@ -146,7 +146,7 @@ import { Select,
                 </SelectContent>
             </Select>
             <p id="state-help" className="text-xs text-gray-500">
-              Select your state from the dropdown
+              Select state from the dropdown
             </p>
           </div>
         </div>
