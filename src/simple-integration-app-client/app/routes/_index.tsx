@@ -14,8 +14,8 @@ export const meta: MetaFunction = () => {
 }
 
 // Constants
-// const API_BASE_URL = 'http://localhost:5204'
-const API_BASE_URL = 'https://occ8ko8kw44kckgk8sw8wk84.mttwhlly.cc'
+const API_BASE_URL = 'http://localhost:5204'
+// const API_BASE_URL = 'https://occ8ko8kw44kckgk8sw8wk84.mttwhlly.cc'
 const API_TIMEOUT = 5000 // 5 seconds timeout
 
 // Type definitions
