@@ -26,5 +26,8 @@ COPY --from=build /app/publish .
 # Expose port 80 (optional, adjust as needed)
 EXPOSE 3000
 
+ENV ASPNETCORE_URLS=http://+:3000
+ENV ASPNETCORE_ENVIRONMENT=Production
+
 # Set the entry point to run the application
 ENTRYPOINT ["dotnet", "SimpleIntegrationApi.dll"]
