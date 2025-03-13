@@ -9,15 +9,16 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// builder.Services.AddCors(options =>
-// {
-//     options.AddDefaultPolicy(policy =>
-//     {
-//         policy.WithOrigins("http://localhost:3000", "https://localhost:3000", "https://hgswscsc8g88koc0gso880o8.mttwhlly.cc")
-//               .AllowAnyHeader()
-//               .AllowAnyMethod();
-//     });
-// });
+builder.Services.AddCors(options =>
+{
+    options.AddDefaultPolicy(policy =>
+    {
+        policy.AllowAnyOrigin() // Most permissive - allows requests from any origin
+              .AllowAnyHeader()
+              .AllowAnyMethod()
+              .WithExposedHeaders("Content-Disposition");
+    });
+});
 
 builder.Services.AddHttpClient<NppesApiClient>(client =>
 {
@@ -27,7 +28,24 @@ builder.Services.AddHttpClient<NppesApiClient>(client =>
 var app = builder.Build();
 
 app.UseRouting();
-// app.UseCors();
+
+app.Use(async (context, next) =>
+{
+    // Handle OPTIONS preflight requests
+    if (context.Request.Method == "OPTIONS")
+    {
+        context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+        context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type, Authorization");
+        context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS");
+        context.Response.StatusCode = 200;
+        await context.Response.CompleteAsync();
+        return;
+    }
+
+    await next();
+});
+
+app.UseCors();
 
 if (app.Environment.IsDevelopment())
 {
@@ -35,10 +53,10 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-// if (!app.Environment.IsDevelopment())
-// {
-//     app.UseHttpsRedirection();
-// }
+if (!app.Environment.IsDevelopment())
+{
+    app.UseHttpsRedirection();
+}
 
 app.UseAuthorization();
 app.MapControllers();
