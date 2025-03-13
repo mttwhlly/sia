@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SimpleIntegrationApi.Mappers;
 using SimpleIntegrationApi.Services;
+using Microsoft.AspNetCore.Cors;
 
 namespace SimpleIntegrationApi.Controllers;
 
