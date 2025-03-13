@@ -6,6 +6,7 @@ namespace SimpleIntegrationApi.Controllers;
 
 [ApiController]
 [Route("[controller]")]
+[EnableCors]
 
 public class ProvidersController : ControllerBase
 {
@@ -18,6 +19,11 @@ public class ProvidersController : ControllerBase
         _logger = logger;
     }
     
+    [HttpOptions]
+    public IActionResult PreflightRoute()
+    {
+        return NoContent();
+    }
 
     [HttpGet]
     public async Task<IActionResult> Get(
@@ -28,6 +34,8 @@ public class ProvidersController : ControllerBase
     {
         try
         {
+            _logger.LogInformation($"Received provider search request: firstName={firstName}, lastName={lastName}, city={city}, state={state}");
+            
             var queryParams = new Dictionary<string, string>
             {
                 { "version", "2.1" },
